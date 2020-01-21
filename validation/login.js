@@ -1,0 +1,26 @@
+const Validator = require("validator");
+const validText = require('./valid_text');
+
+module.exports = function(data) {
+    let errors = {};
+
+    data.email = validText(data) ? data.email : "";
+    data.password = validText(data) ? data.password : "";
+
+    if (!Validator.isEmail(data.email)) {
+        errors.email = "Invalid email";
+    }
+
+    if (Validator.isEmpty(data.email)) {
+        errors.email = "Email field is empty";
+    }
+
+    if (Validator.isEmpty(data.password)) {
+        errors.password = "Password field is required";
+    }
+
+    return {
+        errors,
+        isValid: Object.keys(errors).length === 0
+    }
+}
